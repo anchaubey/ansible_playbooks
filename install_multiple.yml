@@ -1,0 +1,12 @@
+---
+- hosts: nodes
+  become: yes
+  tasks:
+    - name: Installing multiple packages
+      yum:
+        name: "{{ item }}"
+      with_items:
+      - openssh-server
+      - httpd
+      - python-pip
+      - php

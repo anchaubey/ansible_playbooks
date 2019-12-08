@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Ensure the default Apache port is 8080
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^Listen '
+        insertafter: '^#Listen '
+        line: Listen 8080
+    - name: adding host file entry
+      blockinfile:
+        path: /etc/hosts
+        block: |
+          172.31.90.90 master
+          172.31.92.121 node1
+          172.31.82.187 node2

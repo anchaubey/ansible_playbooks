@@ -1,0 +1,15 @@
+---
+- hosts: nodes
+  become: yes
+  tasks:
+    - name: Ansible create multiple files.
+      file:
+#        path: "{{ item }}"
+        path: "/tmp/{{ item}}" 
+        state: touch
+        mode: 0755
+      with_items:
+      - access.log
+      - system.log
+      - properties.txt
+      - conffile.conf
