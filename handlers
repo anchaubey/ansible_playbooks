@@ -1,0 +1,33 @@
+The easiest way to think about Handlers is that they are fancy Tasks.
+
+Tasks are Ansible's way of doing something and Handlers are our way of calling a Task after some other Task completes.
+
+The best way to think of this is using the example of having a Playbook for installing Apache. As part of that Playbook, we have a variety of Tasks that carry out the essential tasks that make up our Apache install. Everything from installing Apache through to securing our installation, creating our expected directory structure, and ensuring all our plugins (e.g. mod_rewrite) are installed.
+
+Now, as part of some of these Tasks (or steps), we would have to re-start Apache.
+
+We don't want to copy and paste a Task over and over, whenever we need to re-start Apache (or any other service for that matter).
+
+Instead, we want to put a single Restart Apache Task into our Playbook somehow, and then call that Task as required.
+
+That Task we call is a Handler. A task we can re-use multiple times whilst our Playbook runs.
+
+We call Handlers using the notify syntax.
+
+---
+- hosts: all
+
+  tasks: 
+    - name: Install Nginx
+      apt: pkg=nginx state=installed update_cache=true
+      notify:
+        - Start Nginx
+
+  handlers:
+    - name: Start Nginx
+      service: name=nginx state=started
+Already you are likely beginning to see how these Playbooks can become large and unwieldy beasts, if not kept in check. We will look at how to properly structure our Playbooks in a forthcoming video, but it is good to know that you can - if you are so inclined - keep everything directly in a single Playbook file.
+
+So in summary, and to quote directly from the manual:
+
+Handlers are just like regular tasks in an Ansible playbook (see Tasks), but are only run if the Task contains a “notify” directive and also indicates that it changed something. For example, if a config file is changed then the task referencing the config file templating operation may notify a service restart handler. This means services can be bounced only if they need to be restarted. Handlers can be used for things other than service restarts, but service restarts are the most common usage.
