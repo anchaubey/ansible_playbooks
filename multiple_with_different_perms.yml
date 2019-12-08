@@ -1,6 +1,7 @@
 ---
 - hosts: nodes
   become: yes
+  gather_facts: False
   tasks:
   - name: Creating multiple files wit different permissions
     file:
