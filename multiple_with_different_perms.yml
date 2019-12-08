@@ -1,0 +1,13 @@
+---
+- hosts: nodes
+  become: yes
+  tasks:
+  - name: Creating multiple files wit different permissions
+    file:
+      path: "{{ item.location }}"
+      state: touch
+      mode: "{{ item.mode }}"
+    with_items:
+    - { location: '/tmp/filer123',mode: '0566' }
+    - { location: '/tmp/filer456',mode: '0755' }
+
